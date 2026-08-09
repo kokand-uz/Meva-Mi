@@ -6,12 +6,12 @@
 
 let cart = [];
 let promoApplied = false;
+let currentDiscount = 0;
 
-const PROMO_CODE = "MEVAMIX10";
-const DISCOUNT = 0.10;
-
-const PROMO_CODE = "6MEVA79Y";
-const DISCOUNT = 0.20;
+const PROMO_CODES = {
+    "MEVAMIX10": 0.10,
+    "6MEVA79Y": 0.20
+};
 
 
 /* =====================================================
@@ -210,24 +210,17 @@ const fruits = [
    ===================================================== */
 
 function formatPrice(price, unit) {
-
-    return (
-        Number(price).toLocaleString("uz-UZ") +
-        " so‘m/" +
-        unit
-    );
-
+    return Number(price).toLocaleString("uz-UZ") + " so‘m/" + unit;
 }
 
 
 /* =====================================================
-   🍎 MAHSULOTLARNI CHIQARISH
+   🍎 MEVALARNI CHIQARISH
    ===================================================== */
 
 function renderProducts(list = fruits) {
 
-    const grid =
-        document.getElementById("productsGrid");
+    const grid = document.getElementById("productsGrid");
 
     if (!grid) return;
 
@@ -248,41 +241,30 @@ function renderProducts(list = fruits) {
 
     list.forEach(function (fruit, index) {
 
-        const originalIndex =
-            fruits.indexOf(fruit);
+        const originalIndex = fruits.indexOf(fruit);
 
-        const card =
-            document.createElement("article");
+        const card = document.createElement("article");
 
         card.className = "product-card";
 
-        card.style.animationDelay =
-            `${index * 0.05}s`;
+        card.style.animationDelay = `${index * 0.05}s`;
 
         card.innerHTML = `
-
             <div class="product-image">
-
                 <img
                     src="${fruit.image}"
                     alt="${fruit.name}"
                     loading="lazy"
                     onerror="imageError(this)"
                 >
-
             </div>
 
             <div class="product-info">
 
-                <h3>
-                    ${fruit.name}
-                </h3>
+                <h3>${fruit.name}</h3>
 
                 <p class="product-price">
-                    ${formatPrice(
-                        fruit.price,
-                        fruit.unit
-                    )}
+                    ${formatPrice(fruit.price, fruit.unit)}
                 </p>
 
                 <button
@@ -297,9 +279,7 @@ function renderProducts(list = fruits) {
         `;
 
         grid.appendChild(card);
-
     });
-
 }
 
 
@@ -313,7 +293,6 @@ function imageError(image) {
 
     image.src =
         "https://placehold.co/700x500/f4f7ef/6b7d68?text=Meva+Mix";
-
 }
 
 
@@ -323,27 +302,19 @@ function imageError(image) {
 
 function searchProducts() {
 
-    const input =
-        document.getElementById("searchInput");
+    const input = document.getElementById("searchInput");
 
     if (!input) return;
 
-    const search =
-        input.value
-            .toLowerCase()
-            .trim();
+    const search = input.value.toLowerCase().trim();
 
-    const result =
-        fruits.filter(function (fruit) {
+    const result = fruits.filter(function (fruit) {
 
-            return fruit.name
-                .toLowerCase()
-                .includes(search);
+        return fruit.name.toLowerCase().includes(search);
 
-        });
+    });
 
     renderProducts(result);
-
 }
 
 
@@ -353,17 +324,13 @@ function searchProducts() {
 
 function addToCart(index) {
 
-    const fruit =
-        fruits[index];
+    const fruit = fruits[index];
 
     if (!fruit) return;
 
-    const existing =
-        cart.find(function (item) {
-
-            return item.name === fruit.name;
-
-        });
+    const existing = cart.find(function (item) {
+        return item.name === fruit.name;
+    });
 
     if (existing) {
 
@@ -372,23 +339,17 @@ function addToCart(index) {
     } else {
 
         cart.push({
-
             name: fruit.name,
             price: fruit.price,
             unit: fruit.unit,
             image: fruit.image,
             quantity: 1
-
         });
-
     }
 
     updateCart();
 
-    showToast(
-        `🍓 ${fruit.name} savatga qo‘shildi!`
-    );
-
+    showToast(`🍓 ${fruit.name} savatga qo‘shildi!`);
 }
 
 
@@ -398,15 +359,9 @@ function addToCart(index) {
 
 function getCartCount() {
 
-    return cart.reduce(
-        function (total, item) {
-
-            return total + item.quantity;
-
-        },
-        0
-    );
-
+    return cart.reduce(function (total, item) {
+        return total + item.quantity;
+    }, 0);
 }
 
 
@@ -416,18 +371,13 @@ function getCartCount() {
 
 function updateCart() {
 
-    const count =
-        document.getElementById("cartCount");
+    const count = document.getElementById("cartCount");
 
     if (count) {
-
-        count.textContent =
-            getCartCount();
-
+        count.textContent = getCartCount();
     }
 
     renderCart();
-
 }
 
 
@@ -437,8 +387,7 @@ function updateCart() {
 
 function renderCart() {
 
-    const container =
-        document.getElementById("cartItems");
+    const container = document.getElementById("cartItems");
 
     if (!container) return;
 
@@ -446,9 +395,7 @@ function renderCart() {
 
         container.innerHTML = `
             <div class="empty-cart">
-                <div style="font-size:50px;">
-                    🛒
-                </div>
+                <div style="font-size:50px;">🛒</div>
                 <p>Savat hozircha bo‘sh</p>
             </div>
         `;
@@ -462,16 +409,13 @@ function renderCart() {
 
     cart.forEach(function (item, index) {
 
-        const div =
-            document.createElement("div");
+        const div = document.createElement("div");
 
         div.className = "cart-item";
 
-        const itemTotal =
-            item.price * item.quantity;
+        const itemTotal = item.price * item.quantity;
 
         div.innerHTML = `
-
             <img
                 src="${item.image}"
                 alt="${item.name}"
@@ -480,15 +424,10 @@ function renderCart() {
 
             <div class="cart-item-info">
 
-                <h4>
-                    ${item.name}
-                </h4>
+                <h4>${item.name}</h4>
 
                 <p>
-                    ${formatPrice(
-                        itemTotal,
-                        item.unit
-                    )}
+                    ${formatPrice(itemTotal, item.unit)}
                 </p>
 
             </div>
@@ -497,24 +436,16 @@ function renderCart() {
 
                 <button
                     type="button"
-                    onclick="changeQuantity(
-                        ${index},
-                        -1
-                    )"
+                    onclick="changeQuantity(${index}, -1)"
                 >
                     −
                 </button>
 
-                <span>
-                    ${item.quantity}
-                </span>
+                <span>${item.quantity}</span>
 
                 <button
                     type="button"
-                    onclick="changeQuantity(
-                        ${index},
-                        1
-                    )"
+                    onclick="changeQuantity(${index}, 1)"
                 >
                     +
                 </button>
@@ -523,11 +454,9 @@ function renderCart() {
         `;
 
         container.appendChild(div);
-
     });
 
     updateTotal();
-
 }
 
 
@@ -542,13 +471,10 @@ function changeQuantity(index, amount) {
     cart[index].quantity += amount;
 
     if (cart[index].quantity <= 0) {
-
         cart.splice(index, 1);
-
     }
 
     updateCart();
-
 }
 
 
@@ -558,51 +484,35 @@ function changeQuantity(index, amount) {
 
 function getSubtotal() {
 
-    return cart.reduce(
-        function (total, item) {
+    return cart.reduce(function (total, item) {
 
-            return total +
-                item.price *
-                item.quantity;
+        return total + item.price * item.quantity;
 
-        },
-        0
-    );
-
+    }, 0);
 }
 
 
 function calculateTotal() {
 
-    let total =
-        getSubtotal();
+    let total = getSubtotal();
 
     if (promoApplied) {
-
-        total =
-            total -
-            total * DISCOUNT;
-
+        total = total - total * currentDiscount;
     }
 
     return Math.round(total);
-
 }
 
 
 function updateTotal() {
 
-    const total =
-        document.getElementById("cartTotal");
+    const total = document.getElementById("cartTotal");
 
     if (!total) return;
 
     total.textContent =
-        Number(
-            calculateTotal()
-        ).toLocaleString("uz-UZ") +
+        Number(calculateTotal()).toLocaleString("uz-UZ") +
         " so‘m";
-
 }
 
 
@@ -612,43 +522,35 @@ function updateTotal() {
 
 function applyPromo() {
 
-    const input =
-        document.getElementById("promoInput");
+    const input = document.getElementById("promoInput");
 
     if (!input) return;
 
-    const code =
-        input.value
-            .trim()
-            .toUpperCase();
+    const code = input.value.trim().toUpperCase();
 
-    if (code === PROMO_CODE) {
+    if (PROMO_CODES[code] !== undefined) {
 
         if (promoApplied) {
 
-            showToast(
-                "🎁 Promokod allaqachon qo‘llangan!"
-            );
+            showToast("🎁 Promokod allaqachon qo‘llangan!");
 
             return;
         }
 
         promoApplied = true;
+        currentDiscount = PROMO_CODES[code];
 
         updateTotal();
 
-        showToast(
-            "🎉 10% chegirma qo‘llandi!"
-        );
+        const percent = currentDiscount * 100;
+
+        showToast(`🎉 ${percent}% chegirma qo‘llandi!`);
 
     } else {
 
-        showToast(
-            "❌ Promokod noto‘g‘ri!"
-        );
+        showToast("❌ Promokod noto‘g‘ri!");
 
     }
-
 }
 
 
@@ -658,13 +560,11 @@ function applyPromo() {
 
 function openCart() {
 
-    const modal =
-        document.getElementById("cartModal");
+    const modal = document.getElementById("cartModal");
 
     if (!modal) return;
 
     modal.classList.add("active");
-
 }
 
 
@@ -674,13 +574,11 @@ function openCart() {
 
 function closeCart() {
 
-    const modal =
-        document.getElementById("cartModal");
+    const modal = document.getElementById("cartModal");
 
     if (!modal) return;
 
     modal.classList.remove("active");
-
 }
 
 
@@ -690,41 +588,21 @@ function closeCart() {
 
 function showToast(message) {
 
-    const toast =
-        document.getElementById("toast");
+    const toast = document.getElementById("toast");
 
     if (!toast) return;
 
-    toast.textContent =
-        message;
+    toast.textContent = message;
 
     toast.classList.add("show");
 
-    clearTimeout(
-        window.toastTimer
-    );
+    clearTimeout(window.toastTimer);
 
-    window.toastTimer =
-        setTimeout(function () {
+    window.toastTimer = setTimeout(function () {
 
-            toast.classList.remove(
-                "show"
-            );
+        toast.classList.remove("show");
 
-        }, 2500);
-
-}
-
-
-/* =====================================================
-   📞 TELEFON
-   ===================================================== */
-
-function callMevaMix() {
-
-    window.location.href =
-        "tel:+998909627474";
-
+    }, 2500);
 }
 
 
@@ -732,90 +610,38 @@ function callMevaMix() {
    🖱️ MODALNI TASHQARISIGA BOSISH
    ===================================================== */
 
-document.addEventListener(
-    "click",
-    function (event) {
+document.addEventListener("click", function (event) {
 
-        const modal =
-            document.getElementById("cartModal");
+    const modal = document.getElementById("cartModal");
 
-        if (!modal) return;
+    if (!modal) return;
 
-        if (
-            event.target === modal
-        ) {
-
-            closeCart();
-
-        }
-
+    if (event.target === modal) {
+        closeCart();
     }
-);
+});
 
 
 /* =====================================================
    ⌨️ ESC
    ===================================================== */
 
-document.addEventListener(
-    "keydown",
-    function (event) {
+document.addEventListener("keydown", function (event) {
 
-        if (
-            event.key === "Escape"
-        ) {
-
-            closeCart();
-
-        }
-
+    if (event.key === "Escape") {
+        closeCart();
     }
-);
+});
 
 
 /* =====================================================
-   🍓 LOADER
+   🍓 SAYTNI ISHGA TUSHIRISH
    ===================================================== */
 
-window.addEventListener(
-    "load",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-        setTimeout(
-            function () {
+    renderProducts();
 
-                const loader =
-                    document.getElementById(
-                        "loader"
-                    );
+    updateCart();
 
-                if (loader) {
-
-                    loader.classList.add(
-                        "hide"
-                    );
-
-                }
-
-            },
-            1000
-        );
-
-    }
-);
-
-
-/* =====================================================
-   🚀 SAYTNI ISHGA TUSHIRISH
-   ===================================================== */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        renderProducts();
-
-        updateCart();
-
-    }
-);
+});

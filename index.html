@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Meva Mix 🍓</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+
+    <!-- 🍓 LOADER -->
+    <div id="loader">
+        <div class="loader-content">
+            <div class="loader-fruit">🍓</div>
+            <h2>Meva <span>Mix</span></h2>
+            <p>Yangi mevalar tayyorlanmoqda...</p>
+            <div class="loader-line">
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 🍓 HEADER -->
+    <header>
+
+        <div class="logo">
+            Meva <span>Mix</span> 🍓
+        </div>
+
+        <nav>
+            <a href="#home">Bosh sahifa</a>
+            <a href="#products">Mevalar</a>
+            <a href="#about">Biz haqimizda</a>
+        </nav>
+
+        <div class="header-right">
+
+            <a
+                class="phone"
+                href="tel:+998909627474"
+            >
+                📞 90 962 74 74
+            </a>
+
+            <button
+                class="cart-btn"
+                type="button"
+                onclick="openCart()"
+            >
+                🛒
+                <span id="cartCount">0</span>
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- 🏠 HERO -->
+    <main>
+
+        <section
+            id="home"
+            class="hero"
+        >
+
+            <div class="hero-text">
+
+                <span class="hero-label">
+                    🍓 HAR KUNI YANGI
+                </span>
+
+                <h1>
+                    Eng sara
+                    <span>mevalar</span>
+                    siz uchun
+                </h1>
+
+                <p>
+                    Mazali, yangi va sifatli mevalar.
+                    Meva Mix bilan dasturxoningiz yanada
+                    chiroyli bo‘ladi!
+                </p>
+
+                <a
+                    href="#products"
+                    class="hero-btn"
+                >
+                    Mevalarni ko‘rish 🍉
+                </a>
+
+            </div>
+
+
+            <div class="hero-fruits">
+
+                <div class="fruit-circle circle-one">
+                    🍓
+                </div>
+
+                <div class="fruit-circle circle-two">
+                    🍊
+                </div>
+
+                <div class="fruit-circle circle-three">
+                    🍍
+                </div>
+
+                <div class="hero-main-fruit">
+                    🍉
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 🍎 PRODUCTS -->
+        <section
+            id="products"
+            class="products-section"
+        >
+
+            <div class="section-heading">
+
+                <span>
+                    🍓 MEVA MIX
+                </span>
+
+                <h2>
+                    Bizning mevalar
+                </h2>
+
+                <p>
+                    O‘zingizga yoqqan mevani tanlang
+                </p>
+
+            </div>
+
+
+            <!-- 🔎 SEARCH -->
+            <div class="search-box">
+
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="🔎 Meva qidirish..."
+                    oninput="searchProducts()"
+                >
+
+            </div>
+
+
+            <!-- 🍓 PRODUCTS -->
+            <div
+                id="productsGrid"
+                class="products-grid"
+            ></div>
+
+        </section>
+
+
+        <!-- ℹ️ ABOUT -->
+        <section
+            id="about"
+            class="about-section"
+        >
+
+            <div class="about-card">
+
+                <div class="about-icon">
+                    🍓
+                </div>
+
+                <div>
+                    <span>MEVA MIX</span>
+
+                    <h2>
+                        Tabiiylik va mazalilik
+                    </h2>
+
+                    <p>
+                        Biz sizga yangi va sifatli
+                        mevalarni taklif qilamiz.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- 🛒 CART MODAL -->
+    <div
+        id="cartModal"
+        class="cart-modal"
+    >
+
+        <div class="cart-window">
+
+            <div class="cart-header">
+
+                <h2>
+                    🛒 Savatingiz
+                </h2>
+
+                <button
+                    type="button"
+                    onclick="closeCart()"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div
+                id="cartItems"
+                class="cart-items"
+            ></div>
+
+
+            <!-- 🎁 PROMO -->
+            <div class="promo">
+
+                <input
+                    id="promoInput"
+                    type="text"
+                    placeholder="Promokod"
+                >
+
+                <button
+                    type="button"
+                    onclick="applyPromo()"
+                >
+                    Qo‘llash
+                </button>
+
+            </div>
+
+
+            <div class="cart-bottom">
+
+                <div class="total-row">
+                    <span>Jami:</span>
+
+                    <strong id="cartTotal">
+                        0 so‘m
+                    </strong>
+                </div>
+
+                <button
+                    class="order-btn"
+                    type="button"
+                    onclick="showToast('📞 Buyurtma uchun: 90 962 74 74')"
+                >
+                    📞 Buyurtma berish
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 🔔 TOAST -->
+    <div id="toast"></div>
+
+
+    <!-- 📜 JAVASCRIPT -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
